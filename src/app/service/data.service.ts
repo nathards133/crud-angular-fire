@@ -7,17 +7,17 @@ import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/datab
   providedIn: 'root'
 })
 export class DataService {
-  private dbPath = 'app-funcionarios';
+  private dbPath = '/funcionarios';
 
   funcionariosRef: AngularFireList<Funcionario>;
 
-  constructor(private db: AngularFireDatabase, private afs: AngularFirestore) {
+  constructor(public db: AngularFireDatabase, private afs: AngularFirestore) {
     this.funcionariosRef = db.list(this.dbPath);
   }
 
   // Criar funcionário
   AddFuncionario(funcionario: Funcionario) : void {
-    this.afs.collection<Funcionario>('funcionarios').add({
+    this.afs.collection<Funcionario>('funcionario').add({
       nome: funcionario.nome,
       email: funcionario.email,
       cargo: funcionario.cargo,
@@ -27,7 +27,7 @@ export class DataService {
 
   // Obter todos os funcionários
   getAllFuncionarios() {
-    return this.afs.collection<Funcionario>('funcionarios').valueChanges();
+    return this.afs.collection<Funcionario>('funcionario').valueChanges();
   }
 
 

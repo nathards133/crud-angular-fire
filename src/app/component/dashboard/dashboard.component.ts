@@ -66,5 +66,5 @@ export class DashboardComponent implements OnInit {
     }, err => {
         console.log(err);
     });
-}
+  }
 }
