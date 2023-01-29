@@ -7,7 +7,7 @@ import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/datab
   providedIn: 'root'
 })
 export class DataService {
-  private dbPath = '/dashboard';
+  private dbPath = 'app-funcionarios';
 
   funcionariosRef: AngularFireList<Funcionario>;
 
@@ -23,6 +23,11 @@ export class DataService {
       cargo: funcionario.cargo,
       salario: funcionario.salario,
     });
+  }
+
+  // Obter todos os funcionários
+  getAllFuncionarios() {
+    return this.afs.collection<Funcionario>('funcionarios').valueChanges();
   }
 
 

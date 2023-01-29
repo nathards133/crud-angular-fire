@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, FormControl } from '@angular/forms'
 import { Funcionario } from 'src/app/model/funcionario.model';
 import { DataService } from 'src/app/service/data.service';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,33 +25,26 @@ export class DashboardComponent implements OnInit {
     this.getAllFuncionarios();
 
     this.funcionarios = this.formBuilder.group({
-      nome: new FormControl(''),
-      email: new FormControl(''),
-      cargo: new FormControl(''),
-      salario: new FormControl(''),
+      nome: [''],
+      email: [''],
+      salario: [''],
+      cargo: ['']
     });
   }
 
   addEmployee() {
-    console.log(this.funcionarios);
     this.funcionarioObj.nome = this.funcionarios.value.nome;
     this.funcionarioObj.salario = this.funcionarios.value.salario;
     this.funcionarioObj.email = this.funcionarios.value.email;
     this.funcionarioObj.cargo = this.funcionarios.value.cargo;
     this.DataService.AddFuncionario(this.funcionarioObj);
+    console.log(this.funcionarioObj);
   }
 
-  getAllFuncionarios() {
-    this.DataService.GetFuncionariosList().
-    snapshotChanges().subscribe(item => {
-      this.funcionarioList = [];
-      item.forEach(element => {
-        let y = element.payload.toJSON();
-        this.funcionarioList.push(y as Funcionario);
-      });
-    }
-    );
+  getAllFuncionarios(): Observable<Funcionario[]> {
+    return this.DataService.getAllFuncionarios();
   }
+    
 
   editEmployee(emp : Funcionario) {
     this.funcionarios.controls['nome'].setValue(emp.nome);

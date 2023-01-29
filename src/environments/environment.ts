@@ -5,14 +5,12 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: "AIzaSyB9TNtoLH5y4jwXJZUoQL2s4nti_q9857g",
-    authDomain: "app-carros-cf412.firebaseapp.com",
-    databaseURL: "https://app-carros-cf412-default-rtdb.firebaseio.com",
-    projectId: "app-carros-cf412",
-    storageBucket: "app-carros-cf412.appspot.com",
-    messagingSenderId: "560539103036",
-    appId: "1:560539103036:web:37c7ce53826e742095b839",
-    measurementId: "G-4L44LMP690"
+    apiKey: "AIzaSyDTUsils4h6nhMS4Fcm-IdkrJZbvQl665o",
+    authDomain: "funcionarios-26777.firebaseapp.com",
+    projectId: "funcionarios-26777",
+    storageBucket: "funcionarios-26777.appspot.com",
+    messagingSenderId: "45408219142",
+    appId: "1:45408219142:web:1eabef38dd4f9f6cf91387"
   }
 };
 
