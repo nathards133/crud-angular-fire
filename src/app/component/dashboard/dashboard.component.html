@@ -1,0 +1,122 @@
+<div class="container-fluid">
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Sistema de Gerenciamento de Funcionários</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#addEmployee" type="submit">Adicionar Funcionario</button>
+          </div>
+        </div>
+    </nav>
+
+    <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Cargo</th>
+            <th scope="col">Email</th>
+            <th scope="col">Salário</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let funcionario of funcionarioList">
+            <th scope="row">{{funcionario.key}}</th>
+            <td>{{funcionario.nome}}</td>
+            <td>{{funcionario.cargo}}</td>
+            <td>{{funcionario.email}}</td>
+            <td>{{funcionario.salario}}</td>
+            <td>
+              <!-- <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#editEmployee" (click)="editEmployee(funcionario)">Editar</button> -->
+              <!-- <button class="btn btn-outline-danger" (click)="deleteEmployee(funcionario.key)">Deletar</button> -->
+            </td>
+           </tr>
+          
+        </tbody>
+      </table>
+
+  
+  <div class="modal fade" id="addEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Adicionar Funcionario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          
+            <form [formGroup]="funcionarios">
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Name </label>
+                    <input type="text" formControlName="nome" class="form-control" id="name" aria-describedby="emailHelp">
+                  </div>
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label">Email </label>
+                  <input type="email" formControlName="email" class="form-control" id="email" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Salario </label>
+                    <input type="text" formControlName="salario" class="form-control" id="email" aria-describedby="emailHelp">
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail1" class="form-label">Cargo</label>
+                    <input type="text" formControlName="cargo" class="form-control" id="cargo" aria-describedby="emailHelp">
+                  </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="addEmployee()">Adicionar</button>
+                  </div>
+              </form>
+
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  
+  
+  <div class="modal fade" id="editEmployee" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Editar informação de Funcionario</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+            <form [formGroup]="funcionarios">
+                <div class="mb-3">
+                    <label for="nome" class="form-label">Name </label>
+                    <input type="text" formControlName="nome" class="form-control" id="name" aria-describedby="emailHelp">
+                  </div>
+                <div class="mb-3">
+                  <label for="email" class="form-label">Email </label>
+                  <input type="email" formControlName="email" class="form-control" id="email" aria-describedby="emailHelp">
+                </div>
+                <div class="mb-3">
+                    <label for="salario" class="form-label">Salario </label>
+                    <input type="text" formControlName="salario" class="form-control" id="email" aria-describedby="emailHelp">
+                  </div>
+                  <div class="mb-3">
+                    <label for="cargo" class="form-label">Cargo </label>
+                    <input type="text" formControlName="cargo" class="form-control" id="cargo" aria-describedby="emailHelp">
+                  </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <!-- <button type="button" class="btn btn-outline-success" (click)="updateEmployee()" data-bs-dismiss="modal">Atualizar </button> -->
+                  </div>
+              </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</div> 
+
