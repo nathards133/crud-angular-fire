@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl } from '@angular/forms'
+import { FormGroup, FormBuilder } from '@angular/forms'
 import { Funcionario } from 'src/app/model/funcionario.model';
 import { DataService } from 'src/app/service/data.service';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+
 
 @Component({
   selector: 'app-dashboard',
@@ -12,59 +11,62 @@ import { Observable } from 'rxjs';
 })
 export class DashboardComponent implements OnInit {
 
-  funcionarios !: FormGroup;
-  funcionarioObj : Funcionario = new Funcionario();
-  funcionarioList : Funcionario[] = [];
+  funcionarios: FormGroup;
+  addFuncionario = false;
+  employees: Funcionario[] = [];
 
-  constructor(private formBuilder : FormBuilder,  private DataService : DataService, 
-    private router: Router
-    ) { }
+  constructor(
+      private fb: FormBuilder,
+      private DataService: DataService,
+    ) {
+      this.funcionarios = this.fb.group({
+        nome: [''],
+        email: [''],
+        salario: [''],
+        cargo: ['']
+      })
+     }
 
   ngOnInit(): void {
-
     this.getAllFuncionarios();
-
-    this.funcionarios = this.formBuilder.group({
-      nome: [''],
-      email: [''],
-      salario: [''],
-      cargo: ['']
-    });
   }
 
   addEmployee() {
-    this.funcionarioObj.nome = this.funcionarios.value.nome;
-    this.funcionarioObj.salario = this.funcionarios.value.salario;
-    this.funcionarioObj.email = this.funcionarios.value.email;
-    this.funcionarioObj.cargo = this.funcionarios.value.cargo;
-    this.DataService.AddFuncionario(this.funcionarioObj);
-    console.log(this.funcionarioObj);
+    const funcionario = this.funcionarios.value as Funcionario;
+    this.DataService.addFuncionario(funcionario).subscribe(() => {
+      this.funcionarios.reset();
+      this.addFuncionario = false;
+    })
   }
 
-  getAllFuncionarios(): Observable<Funcionario[]> {
-    return this.DataService.getAllFuncionarios();
+  getAllFuncionarios() {
+    this.DataService.getAllFuncionarios().subscribe(data => {
+      this.employees =  (data as Array<any>).map(e => {
+        return {
+          id: e.payload.doc.id,
+          nome: e.payload.doc.data()['nome'],
+          email: e.payload.doc.data()['email'],
+          salario: e.payload.doc.data()['salario'],
+          cargo: e.payload.doc.data()['cargo']
+        } as Funcionario;
+      });
+    });
   }
-    
-
-  editEmployee(emp : Funcionario) {
+  
+  editEmployee(emp: Funcionario) {
     this.funcionarios.controls['nome'].setValue(emp.nome);
     this.funcionarios.controls['email'].setValue(emp.email);
     this.funcionarios.controls['salario'].setValue(emp.salario);
     this.funcionarios.controls['cargo'].setValue(emp.cargo);
-
   }
 
   updateEmployee(key: string, employee: Funcionario) {
     this.DataService.updateFuncionario(key, employee)
+    console.log(key, 'atualizado com sucesso')
   }
 
-
   deleteEmployee(id: string) {
-    this.DataService.deleteFuncionario(id).then(res => {
-        alert('Funcionario excluido com sucesso!');
-        this.getAllFuncionarios();
-    }, err => {
-        console.log(err);
-    });
+    this.DataService.deleteFuncionario(id)
+    console.log(id, 'deletado com sucesso')
   }
 }

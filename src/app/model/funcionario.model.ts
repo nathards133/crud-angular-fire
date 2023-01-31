@@ -1,5 +1,5 @@
 export class Funcionario {
-    key?: string = '';
+    id?: string;
     nome : string = '';
     email : string = '';
     cargo : string = '';
