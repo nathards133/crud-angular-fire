@@ -18,34 +18,26 @@ export class DataService {
       email: funcionario.email,
       cargo: funcionario.cargo,
       salario: funcionario.salario
-    }).subscribe();
+    });
   }
 
   // Obter todos os funcionários
   getAllFuncionarios() {
-    return this.firestore.collection(this.collectionEmp).snapshotChanges();
-    // return this.http.get(`${this.baseUrl}/funcionarios`);
+    return this.http.get(`${this.baseUrl}`);
   }
 
-
-  // Obter funcionário específico
-  // getFuncionario(key: string) {
-  //   return this.afs.collection<Funcionario>('funcionarios').doc(key).valueChanges();
-  // } 
-
-  // // Obter lista de funcionários
-  // GetFuncionariosList() : AngularFireList<Funcionario> {
-  //   return this.funcionariosRef;
-  // }
+  // // Obter funcionário específico
+  getFuncionario(id: string) {
+    return this.http.get(`${this.baseUrl}funcionarios/${id}`);
+  }
 
   // // Atualizar funcionário
-  // updateFuncionario(key: string, value: any): Promise<void> {
-  //   return this.funcionariosRef.update(key, value);
-  // }
+  updateFuncionario(id: string, funcionario: Funcionario) {
+    return this.http.put(`${this.baseUrl}funcionarios/${id}`, funcionario);
+  }
 
-  // // Deletar funcionário  
-  //   deleteFuncionario(key: string) {
-  //     return this.afs.collection<Funcionario>('funcionarios').doc(key).delete();
-  //   }
-
+  // // Deletar funcionário
+  deleteFuncionario(id: string) {
+    return this.http.delete(`${this.baseUrl}funcionarios/${id}`);
+  }
 }
