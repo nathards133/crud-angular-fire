@@ -5,6 +5,7 @@ import { DataService } from 'src/app/service/data.service';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -32,39 +33,64 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  addEmployee() {
-    this.funcionarioObj.nome = this.funcionarios.value.nome;
-    this.funcionarioObj.salario = this.funcionarios.value.salario;
-    this.funcionarioObj.email = this.funcionarios.value.email;
-    this.funcionarioObj.cargo = this.funcionarios.value.cargo;
-    this.DataService.AddFuncionario(this.funcionarioObj);
-    console.log(this.funcionarioObj);
+  addFuncionario() {
+    this.funcionarioObj.nome = this.funcionarios.controls['nome'].value;
+    this.funcionarioObj.email = this.funcionarios.controls['email'].value;
+    this.funcionarioObj.salario = this.funcionarios.controls['salario'].value;
+    this.funcionarioObj.cargo = this.funcionarios.controls['cargo'].value;
+    this.DataService.addFuncionario(this.funcionarioObj);
+    this.getAllFuncionarios();
   }
 
-  getAllFuncionarios(): Observable<Funcionario[]> {
-    return this.DataService.getAllFuncionarios();
-  }
-    
-
-  editEmployee(emp : Funcionario) {
-    this.funcionarios.controls['nome'].setValue(emp.nome);
-    this.funcionarios.controls['email'].setValue(emp.email);
-    this.funcionarios.controls['salario'].setValue(emp.salario);
-    this.funcionarios.controls['cargo'].setValue(emp.cargo);
-
-  }
-
-  updateEmployee(key: string, employee: Funcionario) {
-    this.DataService.updateFuncionario(key, employee)
-  }
-
-
-  deleteEmployee(id: string) {
-    this.DataService.deleteFuncionario(id).then(res => {
-        alert('Funcionario excluido com sucesso!');
-        this.getAllFuncionarios();
-    }, err => {
-        console.log(err);
+  getAllFuncionarios() {
+    this.DataService.getAllFuncionarios().subscribe(data => {
+      this.funcionarioList =  (data as Array<any>).map(e => {
+        return {
+          id: e.payload.doc.id,
+          nome: e.payload.doc.data()['nome'],
+          email: e.payload.doc.data()['email'],
+          salario: e.payload.doc.data()['salario'],
+          cargo: e.payload.doc.data()['cargo']
+        } as Funcionario;
+      });
     });
   }
+  
+
+  // getAllFuncionarios() {
+  //   this.DataService.getAllFuncionarios().subscribe(data => {
+  //     this.funcionarioList = data.map(e => {
+  //       return {
+  //         id: e.payload.doc.id,
+  //         nome: e.payload.doc.data()['nome'],
+  //         email: e.payload.doc.data()['email'],
+  //         salario: e.payload.doc.data()['salario'],
+  //         cargo: e.payload.doc.data()['cargo']
+  //       } as Funcionario;
+  //     })
+  //   });
+  // }
+    
+
+  // editEmployee(emp : Funcionario) {
+  //   this.funcionarios.controls['nome'].setValue(emp.nome);
+  //   this.funcionarios.controls['email'].setValue(emp.email);
+  //   this.funcionarios.controls['salario'].setValue(emp.salario);
+  //   this.funcionarios.controls['cargo'].setValue(emp.cargo);
+
+  // }
+
+  // updateEmployee(key: string, employee: Funcionario) {
+  //   this.DataService.updateFuncionario(key, employee)
+  // }
+
+
+  // deleteEmployee(id: string) {
+  //   this.DataService.deleteFuncionario(id).then(res => {
+  //       alert('Funcionario excluido com sucesso!');
+  //       this.getAllFuncionarios();
+  //   }, err => {
+  //       console.log(err);
+  //   });
+  // }
 }

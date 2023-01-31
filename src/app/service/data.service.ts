@@ -1,54 +1,51 @@
 import { Injectable } from '@angular/core';
 import { Funcionario } from '../model/funcionario.model';
+import { HttpClient } from '@angular/common/http';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { AngularFireDatabase, AngularFireList } from '@angular/fire/compat/database';
-
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  private dbPath = '/funcionarios';
+  private baseUrl = "http://localhost:4000/";
+  private collectionEmp = "funcionarios";
 
-  funcionariosRef: AngularFireList<Funcionario>;
-
-  constructor(public db: AngularFireDatabase, private afs: AngularFirestore) {
-    this.funcionariosRef = db.list(this.dbPath);
-  }
+  constructor(private http: HttpClient,  private firestore: AngularFirestore) {}
 
   // Criar funcionário
-  AddFuncionario(funcionario: Funcionario) : void {
-    this.afs.collection<Funcionario>('funcionario').add({
+  addFuncionario(funcionario: Funcionario) {
+    return this.http.post(`${this.baseUrl}funcionarios`, {
       nome: funcionario.nome,
       email: funcionario.email,
       cargo: funcionario.cargo,
-      salario: funcionario.salario,
-    });
+      salario: funcionario.salario
+    }).subscribe();
   }
 
   // Obter todos os funcionários
   getAllFuncionarios() {
-    return this.afs.collection<Funcionario>('funcionario').valueChanges();
+    return this.firestore.collection(this.collectionEmp).snapshotChanges();
+    // return this.http.get(`${this.baseUrl}/funcionarios`);
   }
 
 
   // Obter funcionário específico
-  getFuncionario(key: string) {
-    return this.afs.collection<Funcionario>('funcionarios').doc(key).valueChanges();
-  } 
+  // getFuncionario(key: string) {
+  //   return this.afs.collection<Funcionario>('funcionarios').doc(key).valueChanges();
+  // } 
 
-  // Obter lista de funcionários
-  GetFuncionariosList() : AngularFireList<Funcionario> {
-    return this.funcionariosRef;
-  }
+  // // Obter lista de funcionários
+  // GetFuncionariosList() : AngularFireList<Funcionario> {
+  //   return this.funcionariosRef;
+  // }
 
-  // Atualizar funcionário
-  updateFuncionario(key: string, value: any): Promise<void> {
-    return this.funcionariosRef.update(key, value);
-  }
+  // // Atualizar funcionário
+  // updateFuncionario(key: string, value: any): Promise<void> {
+  //   return this.funcionariosRef.update(key, value);
+  // }
 
-  // Deletar funcionário  
-    deleteFuncionario(key: string) {
-      return this.afs.collection<Funcionario>('funcionarios').doc(key).delete();
-    }
+  // // Deletar funcionário  
+  //   deleteFuncionario(key: string) {
+  //     return this.afs.collection<Funcionario>('funcionarios').doc(key).delete();
+  //   }
 
 }
